@@ -1,0 +1,95 @@
+---
+
+description: 'Next.js App Router + Ant Design coding conventions' globs:
+
+- app/\*\*/\*.{js,ts,tsx}
+- components/\*\*/\*.{js,ts,tsx} alwaysApply: true
+
+---
+
+## Code Style & Structure
+
+- Follow Standard.js: 2 space indent, single quotes, no semicolons, use `===`
+- Use functional components only and PascalCase naming
+- One exported component per file; helpers/subcomponents below
+- Variables/functions use camelCase
+
+## React & Next.js App Router
+
+- Default to Server Components
+- Add `'use client'` only when needed (hooks, DOM, events)
+- Co-locate components in `app/route/...`
+- Use route groups and shared layouts
+- Prefer async server actions for forms/mutations
+- Early guard clauses; avoid nested `if`/`else`
+
+## Hooks & State Management
+
+- Use hooks: `useState`, `useEffect`, `useMemo`, `useCallback`
+- Extract reusable logic into custom hooks
+- Use Zustand for global state
+- Lift state up or use context only when necessary
+
+## Styling (Ant Design only)
+
+- **Always use Ant Design components** for layout, spacing, typography, responsiveness, and all UI
+- ❌ No custom CSS or Stylus modules allowed
+- ❌ Never override Ant Design styles directly
+- ✅ Use `ConfigProvider` theming tokens for customization
+- ❌ Do not use Tailwind or any utility-first CSS frameworks
+- Disable Tailwind Preflight if present:
+  ```js
+  // tailwind.config.js
+  module.exports = {
+    corePlugins: { preflight: false },
+  }
+  ```
+
+## UI Integration
+
+- Wrap the app with `AntdRegistry` or `ConfigProvider` (App Router compatible)
+- Apply theme overrides through `ConfigProvider`
+- Never mix Ant components with custom or utility styles
+
+## Performance Optimization
+
+- Minimize `'use client'` usage
+- Use `dynamic()` import + `Suspense` for client-side components
+- Optimize images using `next/image`, WebP format, and explicit dimensions
+- Use `useMemo` and `useCallback` to reduce unnecessary rerenders
+- Purge unused styles only if any are introduced
+
+## Forms & Validation
+
+- Use Ant Design `Form`, `Input`, `Select`, `Checkbox`, etc.
+- Combine with `react-hook-form` via `Controller`
+- Validate schemas using Zod and `@hookform/resolvers`
+- Show clear errors and disable submit during `isSubmitting`
+
+## Error Handling & Accessibility
+
+- Use early return guard clauses for errors
+- Implement React error boundaries where needed
+- Use semantic HTML + ARIA attributes
+- Ensure all interactive elements are keyboard-accessible
+
+## Testing & Internationalization
+
+- Write unit tests with **Jest** + **React Testing Library**
+- Add integration tests for core user flows
+- Use `next-intl` or `next-i18next` for i18n
+- Store translations in `.json` or `.po` files
+- No hardcoded strings in JSX
+
+## Routing & URL State
+
+- Follow Next.js App Router structure
+- Implement `not-found.js` under `app/` for 404 pages
+- Use **Nuqs** for managing query parameters
+
+## Web Vitals & Hydration
+
+- Optimize LCP, prevent layout shifts
+- Use `font-display: swap` for custom fonts
+- Avoid unnecessary hydration on static content
+
