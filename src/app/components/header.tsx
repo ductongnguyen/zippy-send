@@ -1,6 +1,5 @@
 'use client'
 
-import { useAuth } from '@/context/AuthContext'
 import Link from 'next/link'
 import { Layout, Button, Space } from 'antd'
 import UserDropdown from './userDropdown'
@@ -8,11 +7,11 @@ import UserDropdown from './userDropdown'
 const { Header } = Layout
 
 export default function PageHeader() {
-    const { user, isAuthenticated, loading: userLoading, logout } = useAuth()
+    // const { user, isAuthenticated, loading: userLoading, logout } = useAuth()
 
-    const handleLogout = () => {
-        logout()
-    }
+    // const handleLogout = () => {
+    //     logout()
+    // }
 
     return (
         <Header
@@ -39,16 +38,11 @@ export default function PageHeader() {
             </Link>
 
             <div style={{ marginLeft: 'auto' }}>
-                {userLoading ? (
-                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#f0f0f0' }}></div>
-                ) : isAuthenticated ? (
-                    <UserDropdown user={{ username: user?.username || '' }} onLogout={handleLogout} />
-                ) : (
-                    <Space>
+                <Space>
                         <Link href="/login"><Button className="bg-red-600 text-white hover:bg-red-700 px-4 py-2 rounded">Login</Button></Link>
                         <Link href="/register"><Button className="border border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded">Register</Button></Link>
                     </Space>
-                )}
+                
             </div>
         </Header>
 

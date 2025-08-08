@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import { isTokenExpired, refreshTokenAPI } from '@/utils/auth';
 import type { User, JwtPayload } from '../interfaces/types';
+import { Spin } from 'antd';
 
 interface AuthContextType {
   user: User;
@@ -71,7 +72,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {loading ? <div>Loading session...</div> : children}
+      {loading ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}> <Spin /></div> : children}
     </AuthContext.Provider>
   );
 };
