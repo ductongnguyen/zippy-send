@@ -45,9 +45,6 @@ export default function Home() {
   const pusherRef = useRef<Pusher | null>(null);
   const channelRef = useRef<any | null>(null);
 
-  // ** add this candidate queue **
-  const candidateQueueRef = useRef<RTCIceCandidateInit[]>([]);
-
   const cleanup = () => {
     console.error('%cCLEANUP FUNCTION CALLED!', 'color: red; font-size: 14px;'); // <-- THÊM DÒNG NÀY
 
@@ -60,7 +57,6 @@ export default function Home() {
     peerConnectionRef.current?.close()
     dataChannelRef.current = null
     peerConnectionRef.current = null
-    candidateQueueRef.current = []
   }
 
   useEffect(() => {
@@ -122,26 +118,6 @@ export default function Home() {
     })
   }
 
-  // helper to add candidate or queue if remote desc not set
-  const handleRemoteCandidate = async (candidate: RTCIceCandidateInit) => {
-    const pc = peerConnectionRef.current;
-    if (!pc) return;
-
-    if (pc.remoteDescription && pc.remoteDescription.type) {
-      await pc.addIceCandidate(new RTCIceCandidate(candidate));
-    } else {
-      candidateQueueRef.current.push(candidate);
-    }
-  }
-
-  const flushCandidateQueue = async () => {
-    const pc = peerConnectionRef.current;
-    if (!pc) return;
-    while (candidateQueueRef.current.length) {
-      await pc.addIceCandidate(new RTCIceCandidate(candidateQueueRef.current.shift()!));
-    }
-  }
-
   const initializeSenderPeerConnection = async (senderCode: string) => {
     const pc = new RTCPeerConnection(servers);
     peerConnectionRef.current = pc;
@@ -168,6 +144,11 @@ export default function Home() {
       }
     };
 
+
+
+
+
+
     const channelName = `private-${senderCode}`;
     channelRef.current = pusherRef.current?.subscribe(channelName);
 
@@ -181,11 +162,10 @@ export default function Home() {
     channelRef.current?.bind('answer', async (data: any) => {
       console.log("Sender nhận được answer.");
       await pc.setRemoteDescription(new RTCSessionDescription(data));
-      await flushCandidateQueue();
     });
 
     channelRef.current?.bind('ice-candidate', async (data: any) => {
-      await handleRemoteCandidate(data);
+      await pc.addIceCandidate(new RTCIceCandidate(data));
     });
   };
 
@@ -304,12 +284,10 @@ export default function Home() {
       await pc.setLocalDescription(answer);
 
       sendSignal(receiverCode, 'answer', answer);
-
-      await flushCandidateQueue();
     });
 
     channelRef.current?.bind('ice-candidate', async (data: any) => {
-      await handleRemoteCandidate(data);
+      await pc.addIceCandidate(new RTCIceCandidate(data));
     });
   };
 
@@ -336,12 +314,12 @@ export default function Home() {
 
   const handleDownloadAllZip = () => {
     const zip = new JSZip();
-
+  
     receivedFiles.forEach((file) => {
       const blob = new Blob(file.chunks, { type: file.type });
       zip.file(file.name, blob);
     });
-
+  
     zip.generateAsync({ type: 'blob' }).then((content: Blob) => {
       const link = document.createElement('a');
       link.href = URL.createObjectURL(content);
@@ -349,7 +327,7 @@ export default function Home() {
       link.click();
     });
   };
-
+  
   const resetSenderState = () => {
     setIsSending(false);
     setFileList([]);
@@ -377,7 +355,6 @@ export default function Home() {
     },
     fileList,
   };
-
 
   return (
     <Content style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
