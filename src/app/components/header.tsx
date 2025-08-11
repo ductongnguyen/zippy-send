@@ -2,8 +2,7 @@
 
 import Link from 'next/link'
 import { Layout, Button, Space } from 'antd'
-import UserDropdown from './userDropdown'
-
+import { GiftOutlined } from '@ant-design/icons'    
 const { Header } = Layout
 
 export default function PageHeader() {
@@ -39,8 +38,7 @@ export default function PageHeader() {
 
             <div style={{ marginLeft: 'auto' }}>
                 <Space>
-                        <Link href="/login"><Button className="bg-red-600 text-white hover:bg-red-700 px-4 py-2 rounded">Login</Button></Link>
-                        <Link href="/register"><Button className="border border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded">Register</Button></Link>
+                        <Link href="https://buymeacoffee.com/kazima" target="_blank"><Button className="bg-red-600 text-white hover:bg-red-700 px-4 py-2 rounded"><GiftOutlined /> Buy me a coffee </Button></Link>
                     </Space>
                 
             </div>
