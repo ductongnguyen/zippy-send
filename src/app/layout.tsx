@@ -5,6 +5,7 @@ import { App as AntdApp, Layout } from 'antd'
 import { AuthProvider } from "@/context/AuthContext";
 import PageHeader from "@/app/components/header";
 import PageFooter from "@/app/components/footer";
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,7 +46,7 @@ export default function RootLayout({
             </Layout>
           </AntdApp>
         </AuthProvider>
-
+        <Analytics />
       </body>
     </html>
   );
