@@ -13,9 +13,17 @@ const { Content } = Layout
 
 const servers = {
   iceServers: [
+    { urls: process.env.NEXT_PUBLIC_STUN_URL! },
     {
-      urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'],
-    },
+      urls: [
+        process.env.NEXT_PUBLIC_TURN_URL_80!,
+        process.env.NEXT_PUBLIC_TURN_URL_80_TCP!,
+        process.env.NEXT_PUBLIC_TURN_URL_443!,
+        process.env.NEXT_PUBLIC_TURNS_URL_443_TCP!
+      ],
+      username: process.env.NEXT_PUBLIC_TURN_USERNAME!,
+      credential: process.env.NEXT_PUBLIC_TURN_PASSWORD!,
+    }
   ],
   iceCandidatePoolSize: 10,
 }
