@@ -38,7 +38,8 @@ export default function RootLayout({
         <meta property="og:description" content="Zippy Send is a super-fast, easy-to-use file-sharing service with end-to-end encryption. No account needed. Send files of any size effortlessly." />
         <meta property="og:image" content="https://zippysend.vercel.app/logo.svg" />
         <meta property="og:url" content="https://zippysend.vercel.app/" />
-        <title>Zippy Send</title>
+        <link rel="icon" href="/logo.ico" type="image/x-icon" />
+        <title>Zippy Send - Super-Fast & Easy File Sharing</title>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
